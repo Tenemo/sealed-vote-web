@@ -3,7 +3,7 @@ import React, { ReactElement } from 'react';
 export const HomePage = (): ReactElement => {
     return (
         <main>
-            <h2>HomePage</h2>
+            <h2>sealed.vote</h2>
         </main>
     );
 };
