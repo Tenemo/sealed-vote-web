@@ -1,1 +1,6 @@
-# sealed-vote-web
+## sealed-vote-web
+
+### TODO:
+
+-   everything
+
