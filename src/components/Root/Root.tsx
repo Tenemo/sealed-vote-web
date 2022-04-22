@@ -1,13 +1,13 @@
 import React, { ReactElement, useEffect } from 'react';
 import { CssBaseline, ThemeProvider, CircularProgress } from '@mui/material';
 import { Provider } from 'react-redux';
-import { HistoryRouter as Router } from 'redux-first-history/rr6';
+import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { PersistGate } from 'redux-persist/integration/react';
 import 'fonts/Roboto-Regular.ttf';
 
 import { darkTheme } from 'styles/theme';
-import { store, history, persistor } from 'store/configureStore';
+import { store, persistor } from 'store/configureStore';
 
 import App from 'components/App';
 import 'styles/global.scss';
@@ -31,9 +31,9 @@ export const Root = (): ReactElement => {
                 <HelmetProvider>
                     <ThemeProvider theme={darkTheme}>
                         <CssBaseline enableColorScheme />
-                        <Router history={history}>
+                        <BrowserRouter>
                             <App />
-                        </Router>
+                        </BrowserRouter>
                     </ThemeProvider>
                 </HelmetProvider>
             </PersistGate>

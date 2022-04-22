@@ -7,8 +7,6 @@ import {
 } from 'redux';
 import thunk from 'redux-thunk';
 import { createLogger } from 'redux-logger';
-import { createReduxHistoryContext } from 'redux-first-history';
-import { createBrowserHistory } from 'history';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
@@ -24,15 +22,9 @@ const PERSIST_CONFIG = {
 
 export const initialState = { polls: initialPollsState };
 
-const { createReduxHistory, routerMiddleware, routerReducer } =
-    createReduxHistoryContext({
-        history: createBrowserHistory(),
-    });
-
 export const rootReducer = persistReducer(
     PERSIST_CONFIG,
     combineReducers({
-        router: routerReducer,
         polls: pollsReducer,
     }),
 );
@@ -42,7 +34,7 @@ const logger = createLogger({
     collapsed: true,
 });
 const configureStoreDev = (): Store<RootState> => {
-    const middleware = [thunk, logger, routerMiddleware];
+    const middleware = [thunk, logger];
     return createStore(
         rootReducer,
         initialState,
@@ -50,7 +42,7 @@ const configureStoreDev = (): Store<RootState> => {
     );
 };
 const configureStoreProd = (): Store<RootState> => {
-    const middleware = [thunk, routerMiddleware];
+    const middleware = [thunk];
     return createStore(
         rootReducer,
         initialState,
@@ -62,4 +54,3 @@ const configureStore =
 
 export const store = configureStore();
 export const persistor = persistStore(store);
-export const history = createReduxHistory(store);

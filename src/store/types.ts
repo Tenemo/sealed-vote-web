@@ -1,4 +1,3 @@
-import { RouterState } from 'redux-first-history';
 import { ThunkDispatch, ThunkAction } from 'redux-thunk';
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
 import { AnyAction, Store, Reducer, CombinedState } from 'redux';
@@ -6,7 +5,6 @@ import { AnyAction, Store, Reducer, CombinedState } from 'redux';
 import { PollsState, PollsActionTypes } from 'store/polls/pollsTypes';
 
 export type RootState = {
-    readonly router: RouterState;
     readonly polls: PollsState;
 };
 
