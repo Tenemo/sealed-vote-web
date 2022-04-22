@@ -1,12 +1,6 @@
-import React, {
-    ReactElement,
-    useState,
-    ChangeEvent,
-    useEffect,
-    memo,
-} from 'react';
-import { HowToVote as VoteIcon } from '@mui/icons-material';
-import { ListItem, Typography, Button } from '@mui/material';
+import React, { ReactElement } from 'react';
+// import { HowToVote as VoteIcon } from '@mui/icons-material';
+import { ListItem, Button } from '@mui/material';
 
 type Props = {
     choiceName: string;

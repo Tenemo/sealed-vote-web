@@ -109,6 +109,7 @@ export const vote =
                 `/api/polls/${pollId}/vote`,
                 { votes, voterName },
             );
+            void dispatch(fetchPoll(pollId));
             dispatch(voteSuccess(pollId, response.data));
         } catch (error) {
             dispatch(voteFailure(pollId, error as UnknownError));

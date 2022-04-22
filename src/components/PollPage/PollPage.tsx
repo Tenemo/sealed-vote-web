@@ -3,22 +3,19 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Replay as ReplayIcon } from '@mui/icons-material';
 import {
-    useTheme,
-    Typography,
-    ListItemText,
-    ListItem,
+    // Typography,
     List,
     Box,
     Button,
     TextField,
-    IconButton,
+    // IconButton,
     Alert,
     CircularProgress,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
+    // Dialog,
+    // DialogActions,
+    // DialogContent,
+    // DialogContentText,
+    // DialogTitle,
 } from '@mui/material';
 
 import VoteItem from 'components/VoteItem';
@@ -31,9 +28,16 @@ export const PollPage = (): ReactElement => {
     const [selectedScores, setSelectedScores] = useState<
         Record<string, number>
     >({});
+    const [isResultsVisible, setIsResultsVisible] = useState(false);
+    const [voterName, setVoterName] = useState('');
     const { pollId } = useParams();
     const poll = useSelector(makeGetPoll(pollId ?? ''));
-    const { response, isLoading, error } = poll ?? {};
+    const { response, isLoading, error, vote: voteState } = poll ?? {};
+    const {
+        response: voteResponse,
+        isLoading: voteIsLoading,
+        error: voteError,
+    } = voteState ?? {};
     const { choices, voters, results } = response ?? {};
 
     useEffect(() => {
@@ -51,7 +55,9 @@ export const PollPage = (): ReactElement => {
     const onReload = (): void => {
         void dispatch(fetchPoll(pollId ?? ''));
     };
-    const onSubmit = (): void => {};
+    const onSubmit = (): void => {
+        void dispatch(vote(pollId ?? '', selectedScores, voterName));
+    };
 
     return (
         <Box
@@ -62,15 +68,32 @@ export const PollPage = (): ReactElement => {
                 alignItems: 'center',
             }}
         >
-            <Button
-                disabled={isLoading}
-                onClick={onReload}
-                startIcon={<ReplayIcon />}
-                sx={{ alignSelf: 'flex-end', m: 2 }}
-                variant="outlined"
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                }}
             >
-                Refresh vote
-            </Button>
+                <Button
+                    disabled={isLoading}
+                    onClick={onReload}
+                    startIcon={<ReplayIcon />}
+                    sx={{ m: 2 }}
+                    variant="outlined"
+                >
+                    Refresh vote
+                </Button>
+                {results && (
+                    <Button
+                        onClick={() => setIsResultsVisible(true)}
+                        sx={{ m: 2 }}
+                        variant="outlined"
+                    >
+                        Show current results
+                    </Button>
+                )}
+            </Box>
             {(() => {
                 if ((!response && !error) || isLoading) {
                     return <CircularProgress sx={{ mt: 5 }} />;
@@ -85,6 +108,11 @@ export const PollPage = (): ReactElement => {
                 }
                 return (
                     <>
+                        <pre>
+                            Voters who submitted their votes already:{' '}
+                            {voters?.join(', ')}
+                        </pre>
+                        {isResultsVisible && JSON.stringify(results)}
                         <List>
                             {choices?.map((choiceName) => (
                                 <VoteItem
@@ -95,10 +123,39 @@ export const PollPage = (): ReactElement => {
                                 />
                             ))}
                         </List>
-                        <Button onClick={onSubmit} variant="contained">
-                            Submit votes
-                        </Button>
-                        <pre>{JSON.stringify(response, null, 4)}</pre>
+                        <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <TextField
+                                id="voterName"
+                                inputProps={{ maxLength: 32 }}
+                                label="Voter name*"
+                                name="voterName"
+                                onChange={({ target: { value } }) =>
+                                    setVoterName(value)
+                                }
+                                sx={{ mb: 2 }}
+                                value={voterName}
+                            />
+                            <Button
+                                disabled={
+                                    !voterName ||
+                                    Object.keys(selectedScores).length === 0 ||
+                                    voteIsLoading
+                                }
+                                onClick={onSubmit}
+                                size="large"
+                                sx={{ mt: 1, ml: 1 }}
+                                variant="contained"
+                            >
+                                Submit your choices
+                            </Button>
+                        </Box>
+                        {voteIsLoading && <CircularProgress sx={{ mt: 2 }} />}
+                        {voteError && (
+                            <Alert severity="error" sx={{ mt: 2 }}>
+                                {voteError?.message ?? voteError}
+                            </Alert>
+                        )}
+                        {voteResponse}
                     </>
                 );
             })()}
