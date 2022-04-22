@@ -22,6 +22,7 @@ export const VoteItem = ({
             <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
                 {scoreChoices.map((scoreChoice) => (
                     <Button
+                        key={scoreChoice}
                         onClick={() => onVote(choiceName, scoreChoice)}
                         sx={{ m: 1, padding: '3px 5px' }}
                         variant={

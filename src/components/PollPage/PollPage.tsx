@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Replay as ReplayIcon } from '@mui/icons-material';
 import {
-    // Typography,
+    Typography,
     List,
     Box,
     Button,
@@ -19,6 +19,7 @@ import {
 } from '@mui/material';
 
 import VoteItem from 'components/VoteItem';
+import VoteResults from 'components/VoteResults';
 import { makeGetPoll } from 'store/polls/pollsSelectors';
 import { fetchPoll, vote } from 'store/polls/pollsActions';
 import { useTypedDispatch } from 'store/types';
@@ -59,6 +60,11 @@ export const PollPage = (): ReactElement => {
         void dispatch(vote(pollId ?? '', selectedScores, voterName));
     };
 
+    const isSubmitEnabled =
+        !!voterName.trim() &&
+        Object.keys(selectedScores).length === choices?.length &&
+        !voteIsLoading;
+
     return (
         <Box
             component="main"
@@ -84,7 +90,7 @@ export const PollPage = (): ReactElement => {
                 >
                     Refresh vote
                 </Button>
-                {results && (
+                {results && !isResultsVisible && (
                     <Button
                         onClick={() => setIsResultsVisible(true)}
                         sx={{ m: 2 }}
@@ -109,55 +115,67 @@ export const PollPage = (): ReactElement => {
                 return (
                     <>
                         {!!voters?.length && (
-                            <pre>
+                            <Typography variant="body1">
                                 Voters who submitted their votes already:{' '}
                                 {voters?.join(', ')}
-                            </pre>
+                            </Typography>
                         )}
-                        {isResultsVisible && JSON.stringify(results)}
-                        <List>
-                            {choices?.map((choiceName) => (
-                                <VoteItem
-                                    key={choiceName}
-                                    choiceName={choiceName}
-                                    onVote={onVote}
-                                    selectedScore={selectedScores[choiceName]}
-                                />
-                            ))}
-                        </List>
-                        <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
-                            <TextField
-                                id="voterName"
-                                inputProps={{ maxLength: 32 }}
-                                label="Voter name*"
-                                name="voterName"
-                                onChange={({ target: { value } }) =>
-                                    setVoterName(value)
-                                }
-                                sx={{ mb: 2 }}
-                                value={voterName}
-                            />
-                            <Button
-                                disabled={
-                                    !voterName ||
-                                    Object.keys(selectedScores).length === 0 ||
-                                    voteIsLoading
-                                }
-                                onClick={onSubmit}
-                                size="large"
-                                sx={{ mt: 1, ml: 1 }}
-                                variant="contained"
-                            >
-                                Submit your choices
-                            </Button>
-                        </Box>
-                        {voteIsLoading && <CircularProgress sx={{ mt: 2 }} />}
-                        {voteError && (
-                            <Alert severity="error" sx={{ mt: 2 }}>
-                                {voteError?.message ?? voteError}
-                            </Alert>
+                        {isResultsVisible && <VoteResults results={results} />}
+                        {voteResponse ? (
+                            <Typography sx={{ mt: 3 }} variant="body1">
+                                You have voted successfully.
+                            </Typography>
+                        ) : (
+                            <>
+                                <List>
+                                    {choices?.map((choiceName) => (
+                                        <VoteItem
+                                            key={choiceName}
+                                            choiceName={choiceName}
+                                            onVote={onVote}
+                                            selectedScore={
+                                                selectedScores[choiceName]
+                                            }
+                                        />
+                                    ))}
+                                </List>
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'flex-start',
+                                    }}
+                                >
+                                    <TextField
+                                        id="voterName"
+                                        inputProps={{ maxLength: 32 }}
+                                        label="Voter name*"
+                                        name="voterName"
+                                        onChange={({ target: { value } }) =>
+                                            setVoterName(value)
+                                        }
+                                        sx={{ mb: 2 }}
+                                        value={voterName}
+                                    />
+                                    <Button
+                                        disabled={!isSubmitEnabled}
+                                        onClick={onSubmit}
+                                        size="large"
+                                        sx={{ mt: 1, ml: 1 }}
+                                        variant="contained"
+                                    >
+                                        Submit your choices
+                                    </Button>
+                                </Box>
+                                {voteIsLoading && (
+                                    <CircularProgress sx={{ mt: 2 }} />
+                                )}
+                                {voteError && (
+                                    <Alert severity="error" sx={{ mt: 2 }}>
+                                        {voteError?.message ?? voteError}
+                                    </Alert>
+                                )}
+                            </>
                         )}
-                        {voteResponse}
                     </>
                 );
             })()}

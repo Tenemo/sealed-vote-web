@@ -70,8 +70,8 @@ export const PollCreationPage = (): ReactElement => {
     };
 
     const isChoiceDuplicate = choices.includes(choiceName);
-    const isChoiceNameValid = !!choiceName && !isChoiceDuplicate;
-    const isFormValid = pollName && choices.length > 1 && !isLoading;
+    const isChoiceNameValid = !!choiceName.trim() && !isChoiceDuplicate;
+    const isFormValid = pollName.trim() && choices.length > 1 && !isLoading;
 
     return (
         <Box
@@ -94,9 +94,10 @@ export const PollCreationPage = (): ReactElement => {
             <TextField
                 id="pollName"
                 inputProps={{ maxLength: 32 }}
-                label="Vote name*"
+                label="Vote name"
                 name="pollName"
                 onChange={onFormChange}
+                required
                 sx={{ mb: 2 }}
                 value={pollName}
             />
