@@ -6,6 +6,7 @@ import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import MiniCssExtractPlugin, {
     loader as MiniCssExtractPluginLoader,
 } from 'mini-css-extract-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 
 import { commonConfig } from './webpack.common.babel';
 import packageJSON from '../../package.json';
@@ -42,6 +43,13 @@ export default merge(commonConfig, {
         new MiniCssExtractPlugin({
             filename: `[name].[contenthash].min.css`,
             chunkFilename: `[id].[contenthash].min.css`,
+        }),
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: path.resolve(process.cwd(), '_redirects'),
+                },
+            ],
         }),
         ...(ANALYZE ? [new BundleAnalyzerPlugin()] : []),
     ],

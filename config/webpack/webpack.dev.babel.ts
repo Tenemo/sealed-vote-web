@@ -5,8 +5,6 @@ import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import ReactRefreshBabel from 'react-refresh/babel';
 import { WatchIgnorePlugin, HotModuleReplacementPlugin } from 'webpack';
 import type { Configuration } from 'webpack';
-import CopyWebpackPlugin from 'copy-webpack-plugin';
-import path from 'path';
 
 import { commonConfig } from './webpack.common.babel';
 import packageJSON from '../../package.json';
@@ -48,13 +46,6 @@ const developmentConfiguration: Configuration = {
         new WatchIgnorePlugin({ paths: [/(css|scss)\.d\.ts$/] }),
         new HotModuleReplacementPlugin(),
         new ReactRefreshWebpackPlugin(),
-        new CopyWebpackPlugin({
-            patterns: [
-                {
-                    from: path.resolve(process.cwd(), '_redirects'),
-                },
-            ],
-        }),
     ],
     optimization: {
         minimize: false,
