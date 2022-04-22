@@ -1,12 +1,13 @@
 import React, { ReactElement, useEffect } from 'react';
-import { CssBaseline, ThemeProvider } from '@mui/material';
+import { CssBaseline, ThemeProvider, CircularProgress } from '@mui/material';
 import { Provider } from 'react-redux';
 import { HistoryRouter as Router } from 'redux-first-history/rr6';
 import { HelmetProvider } from 'react-helmet-async';
+import { PersistGate } from 'redux-persist/integration/react';
 import 'fonts/Roboto-Regular.ttf';
 
 import { darkTheme } from 'styles/theme';
-import { store, history } from 'store/configureStore';
+import { store, history, persistor } from 'store/configureStore';
 
 import App from 'components/App';
 import 'styles/global.scss';
@@ -26,14 +27,16 @@ export const Root = (): ReactElement => {
 
     return (
         <Provider store={store}>
-            <HelmetProvider>
-                <ThemeProvider theme={darkTheme}>
-                    <CssBaseline enableColorScheme />
-                    <Router history={history}>
-                        <App />
-                    </Router>
-                </ThemeProvider>
-            </HelmetProvider>
+            <PersistGate loading={<CircularProgress />} persistor={persistor}>
+                <HelmetProvider>
+                    <ThemeProvider theme={darkTheme}>
+                        <CssBaseline enableColorScheme />
+                        <Router history={history}>
+                            <App />
+                        </Router>
+                    </ThemeProvider>
+                </HelmetProvider>
+            </PersistGate>
         </Provider>
     );
 };

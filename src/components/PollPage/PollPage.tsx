@@ -1,22 +1,26 @@
 import React, { ReactElement, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { Replay as ReplayIcon } from '@mui/icons-material';
+import {
+    Replay as ReplayIcon,
+    ContentCopy as CopyIcon,
+} from '@mui/icons-material';
 import {
     Typography,
     List,
     Box,
     Button,
     TextField,
-    // IconButton,
+    IconButton,
     Alert,
     CircularProgress,
-    // Dialog,
-    // DialogActions,
-    // DialogContent,
-    // DialogContentText,
-    // DialogTitle,
+    InputAdornment,
+    FormControl,
+    OutlinedInput,
+    FormHelperText,
+    Tooltip,
 } from '@mui/material';
+import copy from 'copy-to-clipboard';
 
 import VoteItem from 'components/VoteItem';
 import VoteResults from 'components/VoteResults';
@@ -114,6 +118,38 @@ export const PollPage = (): ReactElement => {
                 }
                 return (
                     <>
+                        <FormControl
+                            sx={{
+                                alignSelf: 'flex-start',
+                                m: 2,
+                                minWidth: 400,
+                            }}
+                            variant="filled"
+                        >
+                            <OutlinedInput
+                                aria-describedby="copy-page-link-helper-text"
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <Tooltip title="Copy to clipboard">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                edge="end"
+                                                onClick={() =>
+                                                    copy(window.location.href)
+                                                }
+                                            >
+                                                <CopyIcon />
+                                            </IconButton>
+                                        </Tooltip>
+                                    </InputAdornment>
+                                }
+                                size="small"
+                                value={window.location.href}
+                            />
+                            <FormHelperText id="copy-page-link-helper-text">
+                                Link to the vote to share with others
+                            </FormHelperText>
+                        </FormControl>
                         {!!voters?.length && (
                             <Typography variant="body1">
                                 Voters who submitted their votes already:{' '}

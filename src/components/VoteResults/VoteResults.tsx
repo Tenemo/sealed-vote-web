@@ -21,7 +21,10 @@ export const VoteResults = ({ results }: Props): ReactElement => {
                         {index === 0 && <CupIcon />}
                         {(index === 1 || index === 2) && <MedalIcon />}
                     </ListItemIcon>
-                    <ListItemText primary={choiceName} secondary={score} />
+                    <ListItemText
+                        primary={choiceName}
+                        secondary={`Score: ${score}`}
+                    />
                 </ListItem>
             ))}
         </List>
