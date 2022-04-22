@@ -5,7 +5,8 @@ import { Helmet } from 'react-helmet-async';
 
 import NotFound from 'components/NotFound';
 import Header from 'components/Header';
-import HomePage from 'components/HomePage';
+import PollCreationPage from 'components/PollCreationPage';
+import PollPage from 'components/PollPage';
 
 import styles from './app.scss';
 
@@ -49,7 +50,11 @@ export class App extends Component {
                     <>
                         <Header />
                         <Routes>
-                            <Route element={<HomePage />} path="/" />
+                            <Route element={<PollCreationPage />} path="/" />
+                            <Route
+                                element={<PollPage />}
+                                path="/votes/:pollId"
+                            />
                             <Route element={<NotFound />} path="*" />
                         </Routes>
                     </>

@@ -5,6 +5,7 @@ import {
     POLLS_CREATE_POLL_REQUEST,
     POLLS_CREATE_POLL_FAILURE,
     POLLS_CREATE_POLL_SUCCESS,
+    POLLS_CREATE_POLL_CLEAR,
     POLLS_POLL_REQUEST,
     POLLS_POLL_FAILURE,
     POLLS_POLL_SUCCESS,
@@ -93,6 +94,12 @@ export const pollsReducer = (
                 },
             };
         }
+        case POLLS_CREATE_POLL_CLEAR:
+            return {
+                ...state,
+                createPoll: initialPollsState.createPoll,
+            };
+
         case POLLS_POLL_FAILURE:
             return {
                 ...state,

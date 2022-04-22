@@ -6,6 +6,7 @@ import {
     POLLS_CREATE_POLL_REQUEST,
     POLLS_CREATE_POLL_FAILURE,
     POLLS_CREATE_POLL_SUCCESS,
+    POLLS_CREATE_POLL_CLEAR,
     POLLS_POLL_REQUEST,
     POLLS_POLL_FAILURE,
     POLLS_POLL_SUCCESS,
@@ -45,6 +46,9 @@ export const createPoll =
             dispatch(createPollFailure(error as UnknownError));
         }
     };
+export const createPollClear = (): PollsActionTypes => ({
+    type: POLLS_CREATE_POLL_CLEAR,
+});
 
 export const fetchPollRequest = (pollId: string): PollsActionTypes => ({
     type: POLLS_POLL_REQUEST,

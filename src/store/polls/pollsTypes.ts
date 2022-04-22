@@ -3,6 +3,7 @@ import { UnknownError } from 'typings/errors';
 export const POLLS_CREATE_POLL_REQUEST = 'POLLS_CREATE_POLL_REQUEST';
 export const POLLS_CREATE_POLL_FAILURE = 'POLLS_CREATE_POLL_FAILURE';
 export const POLLS_CREATE_POLL_SUCCESS = 'POLLS_CREATE_POLL_SUCCESS';
+export const POLLS_CREATE_POLL_CLEAR = 'POLLS_CREATE_POLL_CLEAR';
 
 export const POLLS_POLL_REQUEST = 'POLLS_POLL_REQUEST';
 export const POLLS_POLL_FAILURE = 'POLLS_POLL_FAILURE';
@@ -66,6 +67,9 @@ type CreatePollSuccessAction = {
         response: CreatePollResponse;
     };
 };
+type CreatePollClearAction = {
+    type: typeof POLLS_CREATE_POLL_CLEAR;
+};
 
 type PollRequestAction = {
     type: typeof POLLS_POLL_REQUEST;
@@ -113,6 +117,7 @@ export type PollsActionTypes =
     | CreatePollRequestAction
     | CreatePollFailureAction
     | CreatePollSuccessAction
+    | CreatePollClearAction
     | PollRequestAction
     | PollFailureAction
     | PollSuccessAction

@@ -1,4 +1,5 @@
 import React, { ReactElement, useState, ChangeEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Delete as DeleteIcon, Add as AddIcon } from '@mui/icons-material';
 import {
@@ -13,10 +14,15 @@ import {
     IconButton,
     Alert,
     CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
 } from '@mui/material';
 
 import { getPollsCreatePoll } from 'store/polls/pollsSelectors';
-import { createPoll } from 'store/polls/pollsActions';
+import { createPoll, createPollClear } from 'store/polls/pollsActions';
 import { useTypedDispatch } from 'store/types';
 
 type Form = {
@@ -29,9 +35,10 @@ const initialForm = {
     choiceName: '',
 };
 
-export const HomePage = (): ReactElement => {
+export const PollCreationPage = (): ReactElement => {
     const dispatch = useTypedDispatch();
-    const { isLoading, error } = useSelector(getPollsCreatePoll);
+    const navigate = useNavigate();
+    const { isLoading, error, response } = useSelector(getPollsCreatePoll);
 
     const [choices, setChoices] = useState<string[]>([]);
     const [form, setForm] = useState<Form>(initialForm);
@@ -56,8 +63,15 @@ export const HomePage = (): ReactElement => {
         void dispatch(createPoll({ choices, pollName: form.pollName }));
     };
 
+    const onClear = (): void => {
+        setChoices([]);
+        setForm(initialForm);
+        dispatch(createPollClear());
+    };
+
     const isChoiceDuplicate = choices.includes(choiceName);
     const isChoiceNameValid = !!choiceName && !isChoiceDuplicate;
+    const isFormValid = pollName && choices.length > 1 && !isLoading;
 
     return (
         <Box
@@ -91,11 +105,11 @@ export const HomePage = (): ReactElement => {
                     backgroundColor: theme.palette.action.hover,
                     borderRadius: 1,
                     padding: 2,
+                    minWidth: 400,
                 }}
             >
                 <Box
                     sx={{
-                        mb: 2,
                         display: 'flex',
                         minHeight: 80,
                     }}
@@ -123,36 +137,57 @@ export const HomePage = (): ReactElement => {
                         Add new choice
                     </Button>
                 </Box>
-                <Typography sx={{ mb: 2, minWidth: 350 }} variant="body1">
-                    Choices currently in the vote:
-                </Typography>
-                <List>
-                    {choices.map((choice) => (
-                        <ListItem
-                            key={choice}
-                            secondaryAction={
-                                <IconButton
-                                    aria-label="delete"
-                                    edge="end"
-                                    onClick={() => onRemoveChoice(choice)}
-                                >
-                                    <DeleteIcon />
-                                </IconButton>
-                            }
-                            sx={{
-                                border: `1px solid ${theme.palette.secondary.main}`,
-                                borderRadius: 1,
-                                my: 1,
-                                minWidth: 300,
-                            }}
+                {choices.length === 0 && (
+                    <Typography sx={{ m: 1, minWidth: 350 }} variant="body1">
+                        To create a vote, add possible choices to later choose
+                        from.
+                    </Typography>
+                )}
+                {!!choices.length && (
+                    <>
+                        <Typography
+                            sx={{ mb: 1, minWidth: 350 }}
+                            variant="body1"
                         >
-                            <ListItemText primary={choice} />
-                        </ListItem>
-                    ))}
-                </List>
+                            Choices currently in the vote:
+                        </Typography>
+                        <List>
+                            {choices.map((choice) => (
+                                <ListItem
+                                    key={choice}
+                                    secondaryAction={
+                                        <IconButton
+                                            aria-label="delete"
+                                            edge="end"
+                                            onClick={() =>
+                                                onRemoveChoice(choice)
+                                            }
+                                        >
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    }
+                                    sx={{
+                                        border: `1px solid ${theme.palette.secondary.main}`,
+                                        borderRadius: 1,
+                                        my: 1,
+                                        minWidth: 300,
+                                    }}
+                                >
+                                    <ListItemText primary={choice} />
+                                </ListItem>
+                            ))}
+                        </List>
+                    </>
+                )}
+                {choices.length === 1 && (
+                    <Typography sx={{ my: 1, minWidth: 350 }} variant="body2">
+                        There need to be at least two possible choices in a
+                        vote.
+                    </Typography>
+                )}
             </Box>
             <Button
-                disabled={!choices.length || !pollName || isLoading}
+                disabled={!isFormValid}
                 onClick={onCreatePoll}
                 size="large"
                 sx={{ mt: 4 }}
@@ -166,8 +201,37 @@ export const HomePage = (): ReactElement => {
                 </Alert>
             )}
             {isLoading && <CircularProgress sx={{ mt: 2 }} />}
+            <Dialog
+                aria-describedby="alert-course-created"
+                aria-labelledby="alert-course-created"
+                onClose={() => onClear()}
+                open={!!response}
+            >
+                <DialogTitle id="alert-course-created">
+                    Vote successfully created!
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-course-created">
+                        Would you like to go to the newly created vote?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => onClear()}>
+                        Back to vote creation
+                    </Button>
+                    <Button
+                        autoFocus
+                        onClick={() => {
+                            onClear();
+                            navigate(`/votes/${response?.id ?? ''}`);
+                        }}
+                    >
+                        Go to vote
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 };
 
-export default HomePage;
+export default PollCreationPage;
