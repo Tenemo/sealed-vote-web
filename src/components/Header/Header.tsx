@@ -1,25 +1,18 @@
 import React, { ReactElement } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-
-import { getAppTheme } from 'store/app/appSelectors';
-import { toggleTheme } from 'store/app/appActions';
-
-import styles from './header.scss';
+import { useTheme, Typography, Box } from '@mui/material';
 
 export const Header = (): ReactElement => {
-    const dispatch = useDispatch();
-    const appTheme = useSelector(getAppTheme);
-
-    const onToggleThemeClick = (): void => {
-        dispatch(toggleTheme());
-    };
+    const theme = useTheme();
 
     return (
-        <header className={styles.header}>
-            <button onClick={onToggleThemeClick} type="button">
-                Change to {appTheme === 'dark' ? 'light' : 'dark'}
-            </button>
-        </header>
+        <Box
+            component="header"
+            sx={{ borderBottom: `1px solid ${theme.palette.text.primary}` }}
+        >
+            <Typography sx={{ m: 1 }} variant="h4">
+                sealed.vote
+            </Typography>
+        </Box>
     );
 };
 

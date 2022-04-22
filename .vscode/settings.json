@@ -35,7 +35,7 @@
         "typescript",
         "typescriptreact"
     ],
-    "editor.codeActionsOnSave": { "source.fixAll.eslint": false },
+    "editor.codeActionsOnSave": { "source.fixAll.eslint": true },
 
     "workbench.iconTheme": "vscode-icons",
     "cSpell.ignorePaths": ["node_modules", ".git"],
@@ -53,6 +53,7 @@
         "kohler",
         "msjsdiag",
         "pmmmwh",
+        "Roboto",
         "sourcemap",
         "streetsidesoftware",
         "teamsupercell",

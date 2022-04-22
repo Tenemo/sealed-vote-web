@@ -68,6 +68,7 @@ module.exports = {
         'arrow-parens': [ERROR, 'always', { requireForBlockBody: false }],
         'no-use-before-define': OFF, // @typescript-eslint/no-use-before-define replaces this rule
         'no-restricted-exports': OFF,
+        'no-void': [ERROR, { allowAsStatement: true }],
 
         'react/prop-types': OFF,
         'react/prefer-stateless-function': OFF,
@@ -126,6 +127,19 @@ module.exports = {
         '@typescript-eslint/no-unused-vars': ERROR,
         '@typescript-eslint/no-use-before-define': ERROR,
         '@typescript-eslint/unbound-method': ERROR,
+        '@typescript-eslint/member-delimiter-style': [
+            ERROR,
+            {
+                multiline: {
+                    delimiter: 'semi',
+                    requireLast: true,
+                },
+                singleline: {
+                    delimiter: 'semi',
+                    requireLast: false,
+                },
+            },
+        ],
 
         'jest/no-commented-out-tests': ERROR,
     },

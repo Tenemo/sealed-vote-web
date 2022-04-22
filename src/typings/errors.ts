@@ -1,9 +1,7 @@
 export type RequestError = {
-    status: number;
-    statusText: string;
-    data: {
-        description?: string;
-    };
+    statusCode: number;
+    error: string;
+    message: string;
 };
 
 export type UnknownError = RequestError | Error;

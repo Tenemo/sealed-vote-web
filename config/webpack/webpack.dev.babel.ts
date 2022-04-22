@@ -21,6 +21,9 @@ const developmentConfiguration: Configuration = {
         historyApiFallback: true,
         port: PORT as number,
         hot: true,
+        proxy: {
+            '/api': 'http://localhost:4000',
+        },
         headers: {
             'Access-Control-Allow-Origin': `*`,
         },

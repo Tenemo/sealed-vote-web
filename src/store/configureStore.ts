@@ -11,19 +11,19 @@ import { createReduxHistoryContext } from 'redux-first-history';
 import { createBrowserHistory } from 'history';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-import { appReducer, initialAppState } from 'store/app/appReducer';
+import { pollsReducer, initialPollsState } from 'store/polls/pollsReducer';
 import { RootState } from 'store/types';
 import { BUILD_TYPE } from 'constants/appConstants';
 
-export const initialState = { app: initialAppState };
+export const initialState = { polls: initialPollsState };
 
 const { createReduxHistory, routerMiddleware, routerReducer } =
     createReduxHistoryContext({
         history: createBrowserHistory(),
     });
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
     router: routerReducer,
-    app: appReducer,
+    polls: pollsReducer,
 });
 
 const logger = createLogger({
