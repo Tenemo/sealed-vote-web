@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react';
-// import { HowToVote as VoteIcon } from '@mui/icons-material';
-import { ListItem, Button } from '@mui/material';
+import { ListItem, Button, Typography, Box } from '@mui/material';
 
 type Props = {
     choiceName: string;
@@ -16,19 +15,25 @@ export const VoteItem = ({
     selectedScore,
 }: Props): ReactElement => {
     return (
-        <ListItem sx={{ display: 'flex', flexWrap: 'wrap' }}>
-            {choiceName}{' '}
-            {scoreChoices.map((scoreChoice) => (
-                <Button
-                    onClick={() => onVote(choiceName, scoreChoice)}
-                    sx={{ m: 1, padding: '3px 5px' }}
-                    variant={
-                        scoreChoice === selectedScore ? 'contained' : 'outlined'
-                    }
-                >
-                    {scoreChoice}
-                </Button>
-            ))}
+        <ListItem sx={{ display: 'flex', flexDirection: 'column', mb: 3 }}>
+            <Typography sx={{ display: 'block' }} variant="h6">
+                {choiceName}
+            </Typography>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                {scoreChoices.map((scoreChoice) => (
+                    <Button
+                        onClick={() => onVote(choiceName, scoreChoice)}
+                        sx={{ m: 1, padding: '3px 5px' }}
+                        variant={
+                            scoreChoice === selectedScore
+                                ? 'contained'
+                                : 'outlined'
+                        }
+                    >
+                        {scoreChoice}
+                    </Button>
+                ))}
+            </Box>
         </ListItem>
     );
 };

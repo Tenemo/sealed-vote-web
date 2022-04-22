@@ -108,10 +108,12 @@ export const PollPage = (): ReactElement => {
                 }
                 return (
                     <>
-                        <pre>
-                            Voters who submitted their votes already:{' '}
-                            {voters?.join(', ')}
-                        </pre>
+                        {!!voters?.length && (
+                            <pre>
+                                Voters who submitted their votes already:{' '}
+                                {voters?.join(', ')}
+                            </pre>
+                        )}
                         {isResultsVisible && JSON.stringify(results)}
                         <List>
                             {choices?.map((choiceName) => (
