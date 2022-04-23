@@ -8,8 +8,9 @@ Browser application for [sealed.vote](https://sealed.vote).
 
 ### TODO:
 
--   automatic poll reload after inactivity/visiting the page after some time period
 -   sentry.io error logging
+-   footer with links
+-   automatic poll reload after inactivity/visiting the page after some time period
+
 -   two-way dynamic updates for the poll
 -   tests
--   localStorage
