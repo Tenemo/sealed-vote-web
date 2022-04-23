@@ -206,7 +206,6 @@ export const PollCreationPage = (): ReactElement => {
             <Dialog
                 aria-describedby="alert-course-created"
                 aria-labelledby="alert-course-created"
-                onClose={() => onClear()}
                 open={!!response}
             >
                 <DialogTitle id="alert-course-created">
@@ -215,17 +214,27 @@ export const PollCreationPage = (): ReactElement => {
                 <DialogContent>
                     <DialogContentText id="alert-course-created">
                         Your vote link:{' '}
-                        <Link
-                            href={`${window.location.protocol}//
-                        ${window.location.host}
-                        ${`/votes/${response?.id ?? ''}`}`}
-                            target="_blank"
-                        >
-                            {/* eslint-disable-next-line react/jsx-no-comment-textnodes */}
-                            {window.location.protocol}//
-                            {window.location.host}
-                            {`/votes/${response?.id ?? ''}`}
-                        </Link>{' '}
+                        {(() => {
+                            const {
+                                location: { protocol, host },
+                            } = window;
+                            const pollPath = `/votes/${response?.id ?? ''}`;
+                            const href = `${protocol}//${host}${pollPath}`;
+                            return (
+                                // eslint-disable-next-line jsx-a11y/anchor-is-valid
+                                <Link
+                                    onClick={() => {
+                                        navigate(pollPath);
+                                        onClear();
+                                    }}
+                                    sx={{ cursor: 'pointer' }}
+                                    target="_blank"
+                                >
+                                    {href}
+                                </Link>
+                            );
+                        })()}
+                        {'. '}
                         Would you like to go to the newly created vote?
                     </DialogContentText>
                 </DialogContent>
