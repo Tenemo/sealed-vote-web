@@ -1,4 +1,9 @@
-import React, { ReactElement, useState, ChangeEvent } from 'react';
+import React, {
+    ReactElement,
+    useState,
+    ChangeEvent,
+    KeyboardEvent,
+} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Delete as DeleteIcon, Add as AddIcon } from '@mui/icons-material';
@@ -55,8 +60,15 @@ export const PollCreationPage = (): ReactElement => {
         setForm({ ...form, [id]: value });
 
     const onAddChoice = (): void => {
+        if (!form.choiceName.trim()) return;
         setChoices([...choices, form.choiceName]);
         setForm({ ...form, choiceName: '' });
+    };
+
+    const onChoiceKeyDown = ({
+        key,
+    }: KeyboardEvent<HTMLInputElement>): void => {
+        if (key === 'Enter') onAddChoice();
     };
 
     const onRemoveChoice = (choice: string): void =>
@@ -169,6 +181,7 @@ export const PollCreationPage = (): ReactElement => {
                             inputProps={{ maxLength: 64 }}
                             label="Choice to vote for"
                             onChange={onFormChange}
+                            onKeyDown={onChoiceKeyDown}
                             sx={{ m: 1, alignSelf: 'flex-start' }}
                             value={choiceName}
                         />
