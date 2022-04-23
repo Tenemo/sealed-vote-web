@@ -162,7 +162,7 @@ export const PollCreationPage = (): ReactElement => {
                                     : undefined
                             }
                             id="choiceName"
-                            inputProps={{ maxLength: 32 }}
+                            inputProps={{ maxLength: 64 }}
                             label="Choice to vote for"
                             onChange={onFormChange}
                             sx={{ m: 1, alignSelf: 'flex-start' }}
