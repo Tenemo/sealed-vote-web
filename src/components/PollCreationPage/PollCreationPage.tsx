@@ -142,7 +142,7 @@ export const PollCreationPage = (): ReactElement => {
                 {choices.length === 0 && (
                     <Typography sx={{ m: 1, maxWidth: 390 }} variant="body1">
                         To create a vote, add choices that each participant will
-                        be able to rank from 1 to 10 later.
+                        be able to rank from 1 to 10.
                     </Typography>
                 )}
                 {!!choices.length && (
