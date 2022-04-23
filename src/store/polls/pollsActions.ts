@@ -1,3 +1,5 @@
+import { v4 as uuid } from 'uuid';
+
 import {
     PollsActionTypes,
     CreatePollResponse,
@@ -101,13 +103,13 @@ export const voteSuccess = (
     payload: { pollId, response },
 });
 export const vote =
-    (pollId: string, votes: Record<string, number>, voterName: string) =>
+    (pollId: string, votes: Record<string, number>) =>
     async (dispatch: CommonDispatch): Promise<void> => {
         try {
             dispatch(voteRequest(pollId));
             const response = await request.post<VoteResponse>(
                 `/api/polls/${pollId}/vote`,
-                { votes, voterName },
+                { votes, voterName: uuid() },
             );
             void dispatch(fetchPoll(pollId));
             dispatch(voteSuccess(pollId, response.data));

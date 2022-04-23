@@ -10,7 +10,7 @@ import {
     List,
     Box,
     Button,
-    TextField,
+    // TextField,
     IconButton,
     Alert,
     CircularProgress,
@@ -36,7 +36,7 @@ export const PollPage = (): ReactElement => {
         Record<string, number>
     >({});
     const [isResultsVisible, setIsResultsVisible] = useState(false);
-    const [voterName, setVoterName] = useState('');
+    // const [voterName, setVoterName] = useState('');
     const { pollId } = useParams();
     const poll = useSelector(makeGetPoll(pollId ?? ''));
     const { response, isLoading, error, vote: voteState } = poll ?? {};
@@ -63,13 +63,11 @@ export const PollPage = (): ReactElement => {
         void dispatch(fetchPoll(pollId ?? ''));
     };
     const onSubmit = (): void => {
-        void dispatch(vote(pollId ?? '', selectedScores, voterName));
+        void dispatch(vote(pollId ?? '', selectedScores));
     };
 
     const isSubmitEnabled =
-        !!voterName.trim() &&
-        !!Object.keys(selectedScores).length &&
-        !voteIsLoading;
+        !!Object.keys(selectedScores).length && !voteIsLoading;
 
     return (
         <Box
@@ -194,13 +192,20 @@ export const PollPage = (): ReactElement => {
                         </Typography>
                         {!!voters?.length && (
                             <Typography sx={{ py: 1, px: 2 }} variant="body1">
-                                Voters who have submitted their votes:{' '}
-                                {voters?.join(', ')}
+                                {voters?.length}
+                                {voters?.length === 1
+                                    ? ' voter has '
+                                    : ' voters have '}
+                                submitted their
+                                {voters?.length === 1 ? ' vote' : ' votes'}.
                             </Typography>
                         )}
                         {isResultsVisible && <VoteResults results={results} />}
                         {voteResponse ? (
-                            <Typography sx={{ py: 1, px: 2 }} variant="body1">
+                            <Typography
+                                sx={{ py: 1, px: 2, fontWeight: 700 }}
+                                variant="body1"
+                            >
                                 You have voted successfully.
                             </Typography>
                         ) : (
@@ -224,7 +229,7 @@ export const PollPage = (): ReactElement => {
                                         flexWrap: 'wrap',
                                     }}
                                 >
-                                    <TextField
+                                    {/* <TextField
                                         id="voterName"
                                         inputProps={{ maxLength: 32 }}
                                         label="Voter name*"
@@ -234,7 +239,7 @@ export const PollPage = (): ReactElement => {
                                         }
                                         sx={{ m: 2 }}
                                         value={voterName}
-                                    />
+                                    /> */}
                                     <Button
                                         disabled={!isSubmitEnabled}
                                         onClick={onSubmit}
