@@ -19,6 +19,7 @@ import {
     OutlinedInput,
     FormHelperText,
     Tooltip,
+    Grid,
 } from '@mui/material';
 import copy from 'copy-to-clipboard';
 
@@ -118,43 +119,62 @@ export const PollPage = (): ReactElement => {
                 }
                 return (
                     <>
-                        <FormControl
+                        <Grid
+                            container
                             sx={{
-                                alignSelf: 'flex-start',
-                                m: 2,
-                                minWidth: 400,
+                                display: 'flex',
+                                justifyContent: 'center',
                             }}
-                            variant="filled"
                         >
-                            <OutlinedInput
-                                aria-describedby="copy-page-link-helper-text"
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <Tooltip title="Copy to clipboard">
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                edge="end"
-                                                onClick={() =>
-                                                    copy(window.location.href)
-                                                }
-                                            >
-                                                <CopyIcon />
-                                            </IconButton>
-                                        </Tooltip>
-                                    </InputAdornment>
-                                }
-                                size="small"
-                                value={window.location.href}
-                            />
-                            <FormHelperText id="copy-page-link-helper-text">
-                                Link to the vote to share with others
-                            </FormHelperText>
-                        </FormControl>
+                            <Grid
+                                item
+                                lg={6}
+                                md={8}
+                                sm={10}
+                                sx={{ width: '100%', p: 2 }}
+                                xl={4}
+                            >
+                                <FormControl
+                                    sx={{
+                                        alignSelf: 'flex-start',
+                                        width: '100%',
+                                    }}
+                                    variant="filled"
+                                >
+                                    <OutlinedInput
+                                        aria-describedby="copy-page-link-helper-text"
+                                        endAdornment={
+                                            <InputAdornment position="end">
+                                                <Tooltip title="Copy to clipboard">
+                                                    <IconButton
+                                                        aria-label="toggle password visibility"
+                                                        edge="end"
+                                                        onClick={() =>
+                                                            copy(
+                                                                window.location
+                                                                    .href,
+                                                            )
+                                                        }
+                                                    >
+                                                        <CopyIcon />
+                                                    </IconButton>
+                                                </Tooltip>
+                                            </InputAdornment>
+                                        }
+                                        size="small"
+                                        value={window.location.href}
+                                    />
+                                    <FormHelperText id="copy-page-link-helper-text">
+                                        Link to the vote to share with others
+                                    </FormHelperText>
+                                </FormControl>
+                            </Grid>
+                        </Grid>
 
-                        <Typography sx={{ mt: 2 }} variant="h6">
+                        <Typography sx={{ p: 2 }} variant="h6">
                             {response.pollName}
                         </Typography>
-                        <Typography sx={{ m: 2 }} variant="body1">
+                        <Typography sx={{ p: 2 }} variant="body1">
                             {!voteResponse &&
                                 'Rate each choice from 1 to 10. The results will be ranked by geometric mean of all votes.'}{' '}
                             {!isResultsVisible &&
@@ -169,7 +189,7 @@ export const PollPage = (): ReactElement => {
                         )}
                         {isResultsVisible && <VoteResults results={results} />}
                         {voteResponse ? (
-                            <Typography sx={{ mt: 3 }} variant="body1">
+                            <Typography sx={{ p: 2 }} variant="body1">
                                 You have voted successfully.
                             </Typography>
                         ) : (
@@ -189,7 +209,8 @@ export const PollPage = (): ReactElement => {
                                 <Box
                                     sx={{
                                         display: 'flex',
-                                        alignItems: 'flex-start',
+                                        alignItems: 'center',
+                                        flexWrap: 'wrap',
                                     }}
                                 >
                                     <TextField
@@ -200,24 +221,24 @@ export const PollPage = (): ReactElement => {
                                         onChange={({ target: { value } }) =>
                                             setVoterName(value)
                                         }
-                                        sx={{ mb: 2 }}
+                                        sx={{ m: 2 }}
                                         value={voterName}
                                     />
                                     <Button
                                         disabled={!isSubmitEnabled}
                                         onClick={onSubmit}
                                         size="large"
-                                        sx={{ mt: 1, ml: 1 }}
+                                        sx={{ m: 2 }}
                                         variant="contained"
                                     >
                                         Submit your choices
                                     </Button>
                                 </Box>
                                 {voteIsLoading && (
-                                    <CircularProgress sx={{ mt: 2 }} />
+                                    <CircularProgress sx={{ m: 2 }} />
                                 )}
                                 {voteError && (
-                                    <Alert severity="error" sx={{ mt: 2 }}>
+                                    <Alert severity="error" sx={{ m: 2 }}>
                                         {voteError?.message ?? voteError}
                                     </Alert>
                                 )}

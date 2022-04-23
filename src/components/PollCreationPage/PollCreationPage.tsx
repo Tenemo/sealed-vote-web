@@ -20,6 +20,7 @@ import {
     DialogContentText,
     DialogTitle,
     Link,
+    Grid,
 } from '@mui/material';
 
 import { getPollsCreatePoll } from 'store/polls/pollsSelectors';
@@ -92,102 +93,137 @@ export const PollCreationPage = (): ReactElement => {
             >
                 Create a new vote
             </Typography>
-            <TextField
-                id="pollName"
-                inputProps={{ maxLength: 32 }}
-                label="Vote name"
-                name="pollName"
-                onChange={onFormChange}
-                required
-                sx={{ mb: 2, width: 458 }}
-                value={pollName}
-            />
-            <Box
+            <Grid
+                container
                 sx={{
-                    backgroundColor: theme.palette.action.hover,
-                    borderRadius: 1,
-                    padding: 2,
-                    minWidth: 400,
+                    display: 'flex',
+                    justifyContent: 'center',
                 }}
             >
-                <Box
-                    sx={{
-                        display: 'flex',
-                        minHeight: 80,
-                    }}
+                <Grid
+                    item
+                    lg={6}
+                    md={8}
+                    sm={10}
+                    sx={{ width: '100%', p: 1 }}
+                    xl={4}
                 >
                     <TextField
-                        error={isChoiceDuplicate}
+                        autoComplete="off"
                         helperText={
-                            isChoiceDuplicate
-                                ? 'This choice already exists'
-                                : undefined
+                            pollName ? '' : 'What would you like to vote on?'
                         }
-                        id="choiceName"
-                        inputProps={{ maxLength: 32 }}
-                        label="Choice to vote for"
+                        id="pollName"
+                        inputProps={{ maxLength: 64 }}
+                        label="Vote name"
+                        name="pollName"
                         onChange={onFormChange}
-                        value={choiceName}
+                        required
+                        sx={{ mb: 1, minHeight: 80, width: '100%' }}
+                        value={pollName}
                     />
-                    <Button
-                        disabled={!isChoiceNameValid}
-                        onClick={onAddChoice}
-                        startIcon={<AddIcon />}
-                        sx={{ ml: 2, mt: 1.5, alignSelf: 'flex-start' }}
-                        variant="outlined"
+                </Grid>
+            </Grid>
+            <Grid
+                container
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                }}
+            >
+                <Grid
+                    item
+                    lg={6}
+                    md={8}
+                    sm={10}
+                    sx={{
+                        width: '100%',
+                        p: 1,
+                        backgroundColor: theme.palette.action.hover,
+                        borderRadius: 1,
+                    }}
+                    xl={4}
+                >
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            minHeight: 100,
+                            flexWrap: 'wrap',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
                     >
-                        Add new choice
-                    </Button>
-                </Box>
-                {choices.length === 0 && (
-                    <Typography sx={{ m: 1, maxWidth: 390 }} variant="body1">
-                        To create a vote, add choices that each participant will
-                        be able to rank from 1 to 10.
-                    </Typography>
-                )}
-                {!!choices.length && (
-                    <>
-                        <Typography
-                            sx={{ mb: 1, minWidth: 350 }}
-                            variant="body1"
+                        <TextField
+                            autoComplete="off"
+                            error={isChoiceDuplicate}
+                            helperText={
+                                isChoiceDuplicate
+                                    ? 'This choice already exists'
+                                    : undefined
+                            }
+                            id="choiceName"
+                            inputProps={{ maxLength: 32 }}
+                            label="Choice to vote for"
+                            onChange={onFormChange}
+                            sx={{ m: 1, alignSelf: 'flex-start' }}
+                            value={choiceName}
+                        />
+                        <Button
+                            disabled={!isChoiceNameValid}
+                            onClick={onAddChoice}
+                            startIcon={<AddIcon />}
+                            sx={{ m: 1, mb: 2 }}
+                            variant="outlined"
                         >
-                            Choices currently in the vote:
+                            Add new choice
+                        </Button>
+                    </Box>
+                    {choices.length === 0 && (
+                        <Typography sx={{ m: 1 }} variant="body1">
+                            To create a vote, add choices that each participant
+                            will be able to rank from 1 to 10.
                         </Typography>
-                        <List>
-                            {choices.map((choice) => (
-                                <ListItem
-                                    key={choice}
-                                    secondaryAction={
-                                        <IconButton
-                                            aria-label="delete"
-                                            edge="end"
-                                            onClick={() =>
-                                                onRemoveChoice(choice)
-                                            }
-                                        >
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    }
-                                    sx={{
-                                        border: `1px solid ${theme.palette.secondary.main}`,
-                                        borderRadius: 1,
-                                        my: 1,
-                                        minWidth: 300,
-                                    }}
-                                >
-                                    <ListItemText primary={choice} />
-                                </ListItem>
-                            ))}
-                        </List>
-                    </>
-                )}
-                {choices.length === 1 && (
-                    <Typography sx={{ my: 1, minWidth: 350 }} variant="body1">
-                        There need to be at least two possible choices in a
-                        vote.
-                    </Typography>
-                )}
-            </Box>
+                    )}
+                    {!!choices.length && (
+                        <>
+                            <Typography sx={{ m: 1 }} variant="body1">
+                                Choices currently in the vote:
+                            </Typography>
+                            <List sx={{ p: 2 }}>
+                                {choices.map((choice) => (
+                                    <ListItem
+                                        key={choice}
+                                        secondaryAction={
+                                            <IconButton
+                                                aria-label="delete"
+                                                edge="end"
+                                                onClick={() =>
+                                                    onRemoveChoice(choice)
+                                                }
+                                            >
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        }
+                                        sx={{
+                                            border: `1px solid ${theme.palette.secondary.main}`,
+                                            borderRadius: 1,
+                                            my: 1,
+                                        }}
+                                    >
+                                        <ListItemText primary={choice} />
+                                    </ListItem>
+                                ))}
+                            </List>
+                        </>
+                    )}
+                    {choices.length === 1 && (
+                        <Typography sx={{ m: 1 }} variant="body1">
+                            There need to be at least two possible choices in a
+                            vote.
+                        </Typography>
+                    )}
+                </Grid>
+            </Grid>
             <Button
                 disabled={!isFormValid}
                 onClick={onCreatePoll}
