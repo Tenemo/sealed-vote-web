@@ -9,7 +9,6 @@ import MiniCssExtractPlugin, {
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 
 import { commonConfig } from './webpack.common.babel';
-import packageJSON from '../../package.json';
 
 const { ANALYZE } = process.env;
 
@@ -25,7 +24,7 @@ export default merge(commonConfig, {
     stats: 'normal',
     plugins: [
         new HtmlWebpackPlugin({
-            title: packageJSON.name,
+            title: 'sealed.vote',
             template: `src/index.html`,
             inject: true,
             minify: {

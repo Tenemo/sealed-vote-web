@@ -22,6 +22,7 @@ import {
     Link,
     Grid,
 } from '@mui/material';
+import { Helmet } from 'react-helmet-async';
 
 import { getPollsCreatePoll } from 'store/polls/pollsSelectors';
 import { createPoll, createPollClear } from 'store/polls/pollsActions';
@@ -84,6 +85,9 @@ export const PollCreationPage = (): ReactElement => {
                 alignItems: 'center',
             }}
         >
+            <Helmet>
+                <title>Vote creation</title>
+            </Helmet>
             <Typography
                 sx={{
                     mb: 2,

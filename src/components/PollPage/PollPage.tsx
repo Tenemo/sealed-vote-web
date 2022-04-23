@@ -22,6 +22,7 @@ import {
     Grid,
 } from '@mui/material';
 import copy from 'copy-to-clipboard';
+import { Helmet } from 'react-helmet-async';
 
 import VoteItem from 'components/VoteItem';
 import VoteResults from 'components/VoteResults';
@@ -67,7 +68,7 @@ export const PollPage = (): ReactElement => {
 
     const isSubmitEnabled =
         !!voterName.trim() &&
-        Object.keys(selectedScores).length === choices?.length &&
+        !!Object.keys(selectedScores).length &&
         !voteIsLoading;
 
     return (
@@ -79,6 +80,13 @@ export const PollPage = (): ReactElement => {
                 alignItems: 'center',
             }}
         >
+            <Helmet>
+                <title>
+                    {response
+                        ? response.pollName
+                        : `Vote ${pollId?.split('-')?.[0] ?? ''}`}
+                </title>
+            </Helmet>
             <Box
                 sx={{
                     display: 'flex',
@@ -179,7 +187,7 @@ export const PollPage = (): ReactElement => {
                             variant="body1"
                         >
                             {!voteResponse &&
-                                'Rate each choice from 1 to 10. The results will be ranked by geometric mean of all votes.'}{' '}
+                                'Rate choices from 1 to 10. You do not have to vote on every single item. The results will be ranked by geometric mean of all votes per item.'}{' '}
                             {!isResultsVisible &&
                                 !results &&
                                 'Voting results are available when at least two participants have voted.'}
