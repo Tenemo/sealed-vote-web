@@ -19,6 +19,7 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
+    Link,
 } from '@mui/material';
 
 import { getPollsCreatePoll } from 'store/polls/pollsSelectors';
@@ -98,7 +99,7 @@ export const PollCreationPage = (): ReactElement => {
                 name="pollName"
                 onChange={onFormChange}
                 required
-                sx={{ mb: 2 }}
+                sx={{ mb: 2, width: 458 }}
                 value={pollName}
             />
             <Box
@@ -139,9 +140,9 @@ export const PollCreationPage = (): ReactElement => {
                     </Button>
                 </Box>
                 {choices.length === 0 && (
-                    <Typography sx={{ m: 1, minWidth: 350 }} variant="body1">
-                        To create a vote, add possible choices to later choose
-                        from.
+                    <Typography sx={{ m: 1, maxWidth: 390 }} variant="body1">
+                        To create a vote, add choices that each participant will
+                        be able to rank from 1 to 10 later.
                     </Typography>
                 )}
                 {!!choices.length && (
@@ -181,7 +182,7 @@ export const PollCreationPage = (): ReactElement => {
                     </>
                 )}
                 {choices.length === 1 && (
-                    <Typography sx={{ my: 1, minWidth: 350 }} variant="body2">
+                    <Typography sx={{ my: 1, minWidth: 350 }} variant="body1">
                         There need to be at least two possible choices in a
                         vote.
                     </Typography>
@@ -213,6 +214,18 @@ export const PollCreationPage = (): ReactElement => {
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-course-created">
+                        Your vote link:{' '}
+                        <Link
+                            href={`${window.location.protocol}//
+                        ${window.location.host}
+                        ${`/votes/${response?.id ?? ''}`}`}
+                            target="_blank"
+                        >
+                            {/* eslint-disable-next-line react/jsx-no-comment-textnodes */}
+                            {window.location.protocol}//
+                            {window.location.host}
+                            {`/votes/${response?.id ?? ''}`}
+                        </Link>{' '}
                         Would you like to go to the newly created vote?
                     </DialogContentText>
                 </DialogContent>

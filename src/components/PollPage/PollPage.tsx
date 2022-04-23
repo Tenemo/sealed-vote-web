@@ -150,6 +150,17 @@ export const PollPage = (): ReactElement => {
                                 Link to the vote to share with others
                             </FormHelperText>
                         </FormControl>
+
+                        <Typography sx={{ mt: 2 }} variant="h6">
+                            {response.pollName}
+                        </Typography>
+                        <Typography sx={{ mb: 2, mt: 2 }} variant="body1">
+                            {!voteResponse &&
+                                'Rate each choice from 1 to 10. The results will be ranked by geometric mean of all votes.'}{' '}
+                            {!isResultsVisible &&
+                                !results &&
+                                'Voting results are available when at least two participants have voted.'}
+                        </Typography>
                         {!!voters?.length && (
                             <Typography variant="body1">
                                 Voters who submitted their votes already:{' '}
