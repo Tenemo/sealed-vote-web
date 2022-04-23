@@ -228,7 +228,7 @@ export const PollCreationPage = (): ReactElement => {
                 disabled={!isFormValid}
                 onClick={onCreatePoll}
                 size="large"
-                sx={{ mt: 4 }}
+                sx={{ m: 2 }}
                 variant="contained"
             >
                 Create vote
