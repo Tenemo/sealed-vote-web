@@ -189,7 +189,7 @@ export const PollCreationPage = (): ReactElement => {
                             <Typography sx={{ m: 1 }} variant="body1">
                                 Choices currently in the vote:
                             </Typography>
-                            <List sx={{ p: 2 }}>
+                            <List sx={{ px: 2, py: 1 }}>
                                 {choices.map((choice) => (
                                     <ListItem
                                         key={choice}
