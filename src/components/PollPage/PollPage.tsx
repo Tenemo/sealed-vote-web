@@ -171,10 +171,13 @@ export const PollPage = (): ReactElement => {
                             </Grid>
                         </Grid>
 
-                        <Typography sx={{ p: 2 }} variant="h6">
+                        <Typography sx={{ py: 1, px: 2 }} variant="h5">
                             {response.pollName}
                         </Typography>
-                        <Typography sx={{ p: 2 }} variant="body1">
+                        <Typography
+                            sx={{ py: 1, px: 2, textAlign: 'center' }}
+                            variant="body1"
+                        >
                             {!voteResponse &&
                                 'Rate each choice from 1 to 10. The results will be ranked by geometric mean of all votes.'}{' '}
                             {!isResultsVisible &&
@@ -182,14 +185,14 @@ export const PollPage = (): ReactElement => {
                                 'Voting results are available when at least two participants have voted.'}
                         </Typography>
                         {!!voters?.length && (
-                            <Typography variant="body1">
-                                Voters who submitted their votes already:{' '}
+                            <Typography sx={{ py: 1, px: 2 }} variant="body1">
+                                Voters who have submitted their votes:{' '}
                                 {voters?.join(', ')}
                             </Typography>
                         )}
                         {isResultsVisible && <VoteResults results={results} />}
                         {voteResponse ? (
-                            <Typography sx={{ p: 2 }} variant="body1">
+                            <Typography sx={{ py: 1, px: 2 }} variant="body1">
                                 You have voted successfully.
                             </Typography>
                         ) : (

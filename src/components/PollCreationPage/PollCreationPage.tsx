@@ -40,12 +40,12 @@ const initialForm = {
 export const PollCreationPage = (): ReactElement => {
     const dispatch = useTypedDispatch();
     const navigate = useNavigate();
+    const theme = useTheme();
+
     const { isLoading, error, response } = useSelector(getPollsCreatePoll);
 
     const [choices, setChoices] = useState<string[]>([]);
     const [form, setForm] = useState<Form>(initialForm);
-    const theme = useTheme();
-
     const { pollName, choiceName } = form;
 
     const onFormChange = ({
