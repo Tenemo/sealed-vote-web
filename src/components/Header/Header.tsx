@@ -1,11 +1,9 @@
 import React, { ReactElement } from 'react';
-import { useTheme, Typography, Box, Link } from '@mui/material';
+import { useTheme, Box, Link } from '@mui/material';
 import { GitHub as GitHubIcon } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
 
 export const Header = (): ReactElement => {
     const theme = useTheme();
-    const navigate = useNavigate();
 
     return (
         <Box
@@ -18,17 +16,9 @@ export const Header = (): ReactElement => {
                 p: 1,
             }}
         >
-            <Typography
-                onClick={() => {
-                    navigate('/');
-                }}
-                sx={{
-                    cursor: 'pointer',
-                }}
-                variant="h4"
-            >
+            <Link href="/" underline="none" variant="h4">
                 sealed.vote
-            </Typography>
+            </Link>
             <Link
                 href="https://github.com/Tenemo"
                 sx={{
