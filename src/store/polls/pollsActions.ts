@@ -103,13 +103,13 @@ export const voteSuccess = (
     payload: { pollId, response },
 });
 export const vote =
-    (pollId: string, votes: Record<string, number>) =>
+    (pollId: string, votes: Record<string, number>, voterName?: string) =>
     async (dispatch: CommonDispatch): Promise<void> => {
         try {
             dispatch(voteRequest(pollId));
             const response = await request.post<VoteResponse>(
                 `/api/polls/${pollId}/vote`,
-                { votes, voterName: uuid() },
+                { votes, voterName: voterName ?? uuid() },
             );
             void dispatch(fetchPoll(pollId));
             dispatch(voteSuccess(pollId, response.data));

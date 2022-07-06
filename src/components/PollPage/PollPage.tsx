@@ -10,7 +10,7 @@ import {
     List,
     Box,
     Button,
-    // TextField,
+    TextField,
     IconButton,
     Alert,
     CircularProgress,
@@ -36,7 +36,7 @@ export const PollPage = (): ReactElement => {
         Record<string, number>
     >({});
     const [isResultsVisible, setIsResultsVisible] = useState(false);
-    // const [voterName, setVoterName] = useState('');
+    const [voterName, setVoterName] = useState('');
     const { pollId } = useParams();
     const poll = useSelector(makeGetPoll(pollId ?? ''));
     const { response, isLoading, error, vote: voteState } = poll ?? {};
@@ -67,7 +67,9 @@ export const PollPage = (): ReactElement => {
     };
 
     const isSubmitEnabled =
-        !!Object.keys(selectedScores).length && !voteIsLoading;
+        !!Object.keys(selectedScores).length &&
+        !voteIsLoading &&
+        !!voterName.trim();
 
     return (
         <Box
@@ -192,14 +194,21 @@ export const PollPage = (): ReactElement => {
                         </Typography>
                         {!!voters?.length && (
                             <Typography sx={{ py: 1, px: 2 }} variant="body1">
-                                {voters?.length}
+                                Voters who submitted their votes:{' '}
+                                {voters?.join(', ')}.
+                            </Typography>
+                        )}
+                        {/* Below is for without names, for the option later */}
+                        {/* {!!voters?.length && (
+                            <Typography sx={{ py: 1, px: 2 }} variant="body1">
                                 {voters?.length === 1
                                     ? ' voter has '
                                     : ' voters have '}
                                 submitted their
                                 {voters?.length === 1 ? ' vote' : ' votes'}.
                             </Typography>
-                        )}
+                        )} */}
+
                         {isResultsVisible && <VoteResults results={results} />}
                         {voteResponse ? (
                             <Typography
@@ -229,7 +238,7 @@ export const PollPage = (): ReactElement => {
                                         flexWrap: 'wrap',
                                     }}
                                 >
-                                    {/* <TextField
+                                    <TextField
                                         id="voterName"
                                         inputProps={{ maxLength: 32 }}
                                         label="Voter name*"
@@ -239,7 +248,7 @@ export const PollPage = (): ReactElement => {
                                         }
                                         sx={{ m: 2 }}
                                         value={voterName}
-                                    /> */}
+                                    />
                                     <Button
                                         disabled={!isSubmitEnabled}
                                         onClick={onSubmit}
