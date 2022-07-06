@@ -35,7 +35,6 @@ export const PollPage = (): ReactElement => {
     const [selectedScores, setSelectedScores] = useState<
         Record<string, number>
     >({});
-    const [isResultsVisible, setIsResultsVisible] = useState(false);
     const [voterName, setVoterName] = useState('');
     const { pollId } = useParams();
     const poll = useSelector(makeGetPoll(pollId ?? ''));
@@ -45,6 +44,7 @@ export const PollPage = (): ReactElement => {
         isLoading: voteIsLoading,
         error: voteError,
     } = voteState ?? {};
+    const [isResultsVisible, setIsResultsVisible] = useState(!!voteResponse);
     const { choices, voters, results } = response ?? {};
 
     useEffect(() => {
@@ -182,6 +182,15 @@ export const PollPage = (): ReactElement => {
                         <Typography sx={{ py: 1, px: 2 }} variant="h5">
                             {response.pollName}
                         </Typography>
+
+                        {voteResponse && (
+                            <Typography
+                                sx={{ py: 1, px: 2, fontWeight: 700 }}
+                                variant="body1"
+                            >
+                                You have voted successfully.
+                            </Typography>
+                        )}
                         <Typography
                             sx={{ py: 1, px: 2, textAlign: 'center' }}
                             variant="body1"
@@ -210,14 +219,7 @@ export const PollPage = (): ReactElement => {
                         )} */}
 
                         {isResultsVisible && <VoteResults results={results} />}
-                        {voteResponse ? (
-                            <Typography
-                                sx={{ py: 1, px: 2, fontWeight: 700 }}
-                                variant="body1"
-                            >
-                                You have voted successfully.
-                            </Typography>
-                        ) : (
+                        {voteResponse || (
                             <>
                                 <List>
                                     {choices?.map((choiceName) => (
