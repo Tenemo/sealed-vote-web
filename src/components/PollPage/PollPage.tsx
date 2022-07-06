@@ -63,7 +63,7 @@ export const PollPage = (): ReactElement => {
         void dispatch(fetchPoll(pollId ?? ''));
     };
     const onSubmit = (): void => {
-        void dispatch(vote(pollId ?? '', selectedScores));
+        void dispatch(vote(pollId ?? '', selectedScores, voterName));
     };
 
     const isSubmitEnabled =
